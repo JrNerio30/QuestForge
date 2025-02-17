@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "username": "QuestMaster01",
+    "email": "questmaster01@questforge.com",
+    "level": 12,
+    "xp": 5400,
+    "badges": ["Explorer", "Daily Streak 30"],
+    "guildname": "Kingdom of Heroes"
+  },
+  {
+    "id": 2,
+    "username": "DragonSlayer",
+    "email": "dragonslayer@questforge.com",
+    "level": 15,
+    "xp": 6800,
+    "badges": ["Dragon Hunter", "Top Quester"],
+    "guildname": "Dragon Seekers"
+  },
+  {
+    "id": 3,
+    "username": "MysticMage",
+    "email": "mysticmage@questforge.com",
+    "level": 8,
+    "xp": 3100,
+    "badges": ["Apprentice Mage"],
+    "guildname": "Arcane Order"
+  },
+  {
+    "id": 4,
+    "username": "RogueShadow",
+    "email": "rogueshadow@questforge.com",
+    "level": 9,
+    "xp": 3500,
+    "badges": ["Silent Achiever"],
+    "guildname": null
+  },
+  {
+    "id": 5,
+    "username": "KnightErrant",
+    "email": "knighterrant@questforge.com",
+    "level": 11,
+    "xp": 5000,
+    "badges": ["Chivalrous Knight", "Daily Streak 10"],
+    "guildname": "Order of Valor"
+  },
+  {
+    "id": 6,
+    "username": "ArcherQueen",
+    "email": "archerqueen@questforge.com",
+    "level": 14,
+    "xp": 6200,
+    "badges": ["Sharpshooter", "Quest Veteran"],
+    "guildname": "Forest Wardens"
+  },
+  {
+    "id": 7,
+    "username": "HealingPriest",
+    "email": "healingpriest@questforge.com",
+    "level": 6,
+    "xp": 2200,
+    "badges": ["Support Specialist"],
+    "guildname": "Light Bringers"
+  },
+  {
+    "id": 8,
+    "username": "BardOfLegends",
+    "email": "bardoflegends@questforge.com",
+    "level": 10,
+    "xp": 4300,
+    "badges": ["Melodic Achiever"],
+    "guildname": "Minstrels of Quest"
+  },
+  {
+    "id": 9,
+    "username": "SummonerX",
+    "email": "summonerx@questforge.com",
+    "level": 13,
+    "xp": 5700,
+    "badges": ["Beast Tamer", "Daily Streak 20"],
+    "guildname": "Summoner's Circle"
+  },
+  {
+    "id": 10,
+    "username": "BlacksmithHero",
+    "email": "blacksmithhero@questforge.com",
+    "level": 5,
+    "xp": 1800,
+    "badges": ["Crafting Novice"],
+    "guildname": null
+  }
+]
