@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const https = require('https');
 const http = require('http')
 const fs = require('fs');
+const hsts = require('hsts');
 const path = require("node:path")
 require("dotenv").config();
 
@@ -35,6 +36,15 @@ app.use((req, res, next) => {
 
   next();
 });
+
+/*/////////////////////////////////////////////////////
+                   HSTS MIDDLEWARE
+////////////////////////////////////////////////////*/
+const hstsOptions = {
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true 
+};
 
 /*/////////////////////////////////////////////////////
                     ROUTE SETUP
@@ -78,7 +88,17 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({error: "Something Went Wrong"});
-})
+});
+
+/*/////////////////////////////////////////////////////
+              HTTPS SERVER WITH HSTS
+////////////////////////////////////////////////////*/
+const httpsServer = https.createServer(options, (req, res) => {
+    // Apply HSTS middleware
+    hsts(hstsOptions)(req, res, () => {
+        app(req, res);
+    });
+});
 
 /*/////////////////////////////////////////////////////
               HTTP AND HTTPS SERVER SETUP
