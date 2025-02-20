@@ -94,7 +94,6 @@ app.use((err, req, res, next) => {
               HTTPS SERVER WITH HSTS
 ////////////////////////////////////////////////////*/
 const httpsServer = https.createServer(options, (req, res) => {
-    // Apply HSTS middleware
     hsts(hstsOptions)(req, res, () => {
         app(req, res);
     });
