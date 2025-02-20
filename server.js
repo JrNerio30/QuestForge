@@ -38,6 +38,20 @@ app.use((req, res, next) => {
 });
 
 /*/////////////////////////////////////////////////////
+                  SERVER STATIC FILES
+////////////////////////////////////////////////////*/
+app.use('/static', express.static(path.join(__dirname, 'public'), {
+    setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.css')) {
+            res.set('Cache-Control', 'max-age=86400');
+        }
+        if (filePath.endsWith('.jpg') || filePath.endsWith('.png')) {
+            res.set('Cache-Control', 'max-age=2592000'); 
+        }
+    }
+}));
+
+/*/////////////////////////////////////////////////////
                    HSTS MIDDLEWARE
 ////////////////////////////////////////////////////*/
 const hstsOptions = {
