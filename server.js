@@ -52,7 +52,7 @@ app.use('/static', express.static(path.join(__dirname, 'public'), {
 }));
 
 /*/////////////////////////////////////////////////////
-                   HSTS MIDDLEWARE
+                    HSTS MIDDLEWARE
 ////////////////////////////////////////////////////*/
 const hstsOptions = {
     maxAge: 31536000,
@@ -107,7 +107,7 @@ app.use((err, req, res, next) => {
 /*/////////////////////////////////////////////////////
               HTTPS SERVER WITH HSTS
 ////////////////////////////////////////////////////*/
-const httpsServer = https.createServer(options, (req, res) => {
+const httpsServer = https.createServer(sslOptions, (req, res) => {
     hsts(hstsOptions)(req, res, () => {
         app(req, res);
     });
