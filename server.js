@@ -7,8 +7,10 @@ const https = require('https');
 const http = require('http')
 const fs = require('fs');
 const hsts = require('hsts');
-const path = require("node:path")
+const path = require('node:path')
 require("dotenv").config();
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 // VARIABLES
 const app = express();
@@ -18,16 +20,32 @@ const {
   usersRouter,
   userApiRouter,
   guildsRouter,
-  guildApiRouter
+  guildApiRouter,
+  authRouter
 } = require('./routes')
-const logger = require('./utils/logger.js')
+const logger = require('./utils/logger.js');
 const PORT_HTTP = process.env.PORT || 80;
 const PORT_HTTPS = process.env.PORT || 443; 
 const PAGES_PATH = path.join(__dirname, "pages");
 
+
+// Constructing the MongoDB connection URI dynamically using environment variables.
+const { MONGO_URI } = process.env;
+
+/*/////////////////////////////////////////////////////
+                    CONNECTING MONGODB
+////////////////////////////////////////////////////*/
+  mongoose.connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }).then(() => console.log("You are now connected to MongoDB!"))
+  .catch(error => console.log('Error reconnecting to MongoDB:', error.message));
+
+
 /*/////////////////////////////////////////////////////
                     MIDDLEWARE SETUP
 ////////////////////////////////////////////////////*/
+app.use(bodyParser.json());
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 
@@ -69,6 +87,7 @@ app.use("/users/", usersRouter);
 app.use("/api/users", userApiRouter);
 app.use("/guilds/", guildsRouter);
 app.use("/api/guilds", guildApiRouter);
+app.use('/api/auth', authRouter);
 
 /*/////////////////////////////////////////////////////
               HELMET SECURITY MIDDLEWARE
@@ -127,3 +146,9 @@ http.createServer((req, res) => {
 https.createServer(sslOptions, app).listen(PORT_HTTPS, () => {
   console.log(`HTTPS Server running at https://localhost:${PORT_HTTPS}`);
 });
+
+/*
+  SOURCES FOR THE MONGOOSE CONNECTIONG
+  - https://dev.to/akashakki/what-is-the-best-way-to-securely-managing-mongoose-connection-in-nodejs-applications-g3 
+  - https://www.geeksforgeeks.org/mongoose-connections/
+*/ 
