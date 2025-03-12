@@ -6,6 +6,7 @@ const guildsRouter = require("./guilds");
 const guildApiRouter = require("./api/guilds");
 const authRouter = require("./auth");
 const dashboardRouter = require("./dashboard");
+const adminRouter = require("./admin");
 
 module.exports = {
   homeRouter, 
@@ -15,5 +16,6 @@ module.exports = {
   guildsRouter, 
   guildApiRouter,
   authRouter,
-  dashboardRouter
+  dashboardRouter,
+  adminRouter
 };
