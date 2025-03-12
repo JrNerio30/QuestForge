@@ -1,9 +1,19 @@
 const express = require('express');
 const argon2 = require('argon2');
-const User = require('../data/models/users');
 const router = express.Router();
+const User = require('../data/models/users');
+const passport = require('../config/passport');
 
-// Register Route
+router.use((req, res, next) => {
+  res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+  res.set("Pragma", "no-cache");
+  res.set("Expires", "0");
+  next();
+});
+
+/*/////////////////////////////////////////////////////
+                  REGISTER ROUTE
+////////////////////////////////////////////////////*/
 router.post('/register', async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -21,7 +31,9 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login Route
+/*/////////////////////////////////////////////////////
+                    LOGIN ROUTE
+////////////////////////////////////////////////////*/
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -39,5 +51,18 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+/*/////////////////////////////////////////////////////
+                  GOOGLE ROUTE
+////////////////////////////////////////////////////*/
+router.get('/google', passport.authenticate('google', { scope: ['profile'] }));
+
+router.get('/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+      console.log("User authenticated:", req.user);
+      res.redirect('/dashboard');
+  }
+);
 
 module.exports = router;
