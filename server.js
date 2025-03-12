@@ -1,18 +1,22 @@
-// NPM MODULES
+/*/////////////////////////////////////////////////////
+                    NPM MODULES
+////////////////////////////////////////////////////*/
 const express = require('express');
-
-// BUILT IN MODULES
 const helmet = require('helmet'); 
 const https = require('https');
 const http = require('http')
 const fs = require('fs');
 const hsts = require('hsts');
 const path = require('node:path')
-require("dotenv").config();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+require("dotenv").config();
 
-// VARIABLES
+
+/*/////////////////////////////////////////////////////
+VARIABLES
+////////////////////////////////////////////////////*/
 const app = express();
 const {
   homeRouter, 
@@ -21,25 +25,38 @@ const {
   userApiRouter,
   guildsRouter,
   guildApiRouter,
-  authRouter
+  authRouter,
+  dashboardRouter
 } = require('./routes')
 const logger = require('./utils/logger.js');
-const PORT_HTTP = process.env.PORT || 80;
-const PORT_HTTPS = process.env.PORT || 443; 
+const { PORT_HTTP } = process.env;
+const { PORT_HTTPS } = process.env; 
 const PAGES_PATH = path.join(__dirname, "pages");
-
-
-// Constructing the MongoDB connection URI dynamically using environment variables.
 const { MONGO_URI } = process.env;
 
 /*/////////////////////////////////////////////////////
                     CONNECTING MONGODB
 ////////////////////////////////////////////////////*/
-  mongoose.connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }).then(() => console.log("You are now connected to MongoDB!"))
-  .catch(error => console.log('Error reconnecting to MongoDB:', error.message));
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => console.log("You are now connected to MongoDB!"))
+.catch(error => console.log('Error reconnecting to MongoDB:', error.message));
+
+/*/////////////////////////////////////////////////////
+                SESSION CONFIGURATION
+////////////////////////////////////////////////////*/
+const passport = require('./config/passport.js');
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: true }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 /*/////////////////////////////////////////////////////
@@ -88,6 +105,8 @@ app.use("/api/users", userApiRouter);
 app.use("/guilds/", guildsRouter);
 app.use("/api/guilds", guildApiRouter);
 app.use('/api/auth', authRouter);
+app.use('/dashboard', dashboardRouter);
+
 
 /*/////////////////////////////////////////////////////
               HELMET SECURITY MIDDLEWARE
