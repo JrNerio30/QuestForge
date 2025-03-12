@@ -4,6 +4,7 @@ const usersRouter = require("./users");
 const userApiRouter = require("./api/users")
 const guildsRouter = require("./guilds");
 const guildApiRouter = require("./api/guilds");
+const authRouter = require("./auth");
 
 module.exports = {
   homeRouter, 
@@ -11,5 +12,6 @@ module.exports = {
   usersRouter, 
   userApiRouter, 
   guildsRouter, 
-  guildApiRouter
+  guildApiRouter,
+  authRouter
 };
