@@ -26,7 +26,8 @@ const {
   guildsRouter,
   guildApiRouter,
   authRouter,
-  dashboardRouter
+  dashboardRouter,
+  adminRouter
 } = require('./routes')
 const logger = require('./utils/logger.js');
 const { PORT_HTTP } = process.env;
@@ -106,6 +107,7 @@ app.use("/guilds/", guildsRouter);
 app.use("/api/guilds", guildApiRouter);
 app.use('/api/auth', authRouter);
 app.use('/dashboard', dashboardRouter);
+app.use('/api/admin', adminRouter);
 
 
 /*/////////////////////////////////////////////////////
