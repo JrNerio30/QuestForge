@@ -11,9 +11,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "argon2": "^0.41.1",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "cookie-parser": "^1.4.7",
+    "csurf": "^1.10.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-validator": "^7.2.1",
     "helmet": "^8.0.0",
-    "hsts": "^2.2.0"
+    "hsts": "^2.2.0",
+    "mongoose": "^8.12.1"
   }
 }
