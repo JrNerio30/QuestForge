@@ -8,9 +8,9 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    console.log("Received Token:", token); // 🛠 Debugging Step
+    console.log("Received Token:", token); 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Decoded Token:", decoded); // 🛠 Debugging Step
+    console.log("Decoded Token:", decoded); 
     req.user = decoded;
     next();
   } catch (error) {
