@@ -7,15 +7,18 @@ const https = require('https');
 const http = require('http')
 const fs = require('fs');
 const hsts = require('hsts');
-const path = require('node:path')
+const path = require('path')
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
 const bodyParser = require('body-parser');
+const csrf = require('csurf');
 const session = require('express-session');
 require("dotenv").config();
 
 
+
 /*/////////////////////////////////////////////////////
-VARIABLES
+                      VARIABLES
 ////////////////////////////////////////////////////*/
 const app = express();
 const {
@@ -34,7 +37,6 @@ const { PORT_HTTP } = process.env;
 const { PORT_HTTPS } = process.env; 
 const PAGES_PATH = path.join(__dirname, "pages");
 const { MONGO_URI } = process.env;
-
 /*/////////////////////////////////////////////////////
                     CONNECTING MONGODB
 ////////////////////////////////////////////////////*/
@@ -53,12 +55,30 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: true }
+  store: MongoStore.create({
+    mongoUrl: MONGO_URI,
+    collectionName: 'sessions',
+  }),
+  cookie: { 
+    httpOnly: true, // This is to prevent access to JavaScript
+    secure: true, // Set true since I'am running on https://localhost/
+    maxAge: 1000 * 60 * 15, // 15 minutes
+  },
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
+/*/////////////////////////////////////////////////////
+                  CSRF PROTECTION
+////////////////////////////////////////////////////*/
+const csrfProtection = csrf();
+app.use(csrfProtection);
+
+app.use((req, res, next) => {
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
 
 /*/////////////////////////////////////////////////////
                     MIDDLEWARE SETUP
@@ -76,7 +96,7 @@ app.use((req, res, next) => {
 /*/////////////////////////////////////////////////////
                   SERVER STATIC FILES
 ////////////////////////////////////////////////////*/
-app.use('/static', express.static(path.join(__dirname, 'public'), {
+app.use('/public', express.static(path.join(__dirname, 'public'), {
     setHeaders: (res, filePath) => {
         if (filePath.endsWith('.css')) {
             res.set('Cache-Control', 'max-age=86400');
