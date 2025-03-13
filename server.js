@@ -11,10 +11,8 @@ const path = require('path')
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
 const bodyParser = require('body-parser');
-const csrf = require('csurf');
 const session = require('express-session');
 require("dotenv").config();
-
 
 
 /*/////////////////////////////////////////////////////
@@ -61,24 +59,13 @@ app.use(session({
   }),
   cookie: { 
     httpOnly: true, // This is to prevent access to JavaScript
-    secure: true, // Set true since I'am running on https://localhost/
+    secure: true,
     maxAge: 1000 * 60 * 15, // 15 minutes
   },
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-/*/////////////////////////////////////////////////////
-                  CSRF PROTECTION
-////////////////////////////////////////////////////*/
-const csrfProtection = csrf();
-app.use(csrfProtection);
-
-app.use((req, res, next) => {
-  res.locals.csrfToken = req.csrfToken();
-  next();
-});
 
 /*/////////////////////////////////////////////////////
                     MIDDLEWARE SETUP
