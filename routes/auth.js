@@ -59,6 +59,7 @@ router.post('/login', async (req, res) => {
 /*/////////////////////////////////////////////////////
                   GOOGLE ROUTE
 ////////////////////////////////////////////////////*/
+// CALL BACK EMAIL ONTO THE DASHBOARD
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/google/callback',
