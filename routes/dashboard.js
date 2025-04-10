@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const { MONGO_URI } = process.env;
 const { body, validationResult } = require('express-validator');
 const crypto = require('crypto');
 const User = require('../data/models/users');
