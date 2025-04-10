@@ -15,11 +15,14 @@ passport.use(new GoogleStrategy({
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: `https://localhost:${PORT_HTTPS}/api/auth/google/callback`
 }, (accessToken, refreshToken, profile, done) => {
-  const user = { 
+  const user = {
     id: profile.id,
     username: profile.displayName,
+    email: profile.emails?.[0]?.value || '',
     role: 'user'
+    
   };
+  
   users[profile.id] = user;
   return done(null, user);
 }));
@@ -27,12 +30,13 @@ passport.use(new GoogleStrategy({
 // Seralizing and Deserializing User
 passport.serializeUser((user, done) => {
   console.log("Serializing user:", user);
-  done(null, user.id);
+  done(null, user);
 });
 
-passport.deserializeUser((id, done) => {
-  console.log("Deserializing user:", id);
-  done(null, users[id]); 
+passport.deserializeUser((user, done) => {
+  console.log("Deserializing user:", user);
+  done(null, user);
 });
+
 
 module.exports = passport;

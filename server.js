@@ -35,6 +35,7 @@ const { PORT_HTTP } = process.env;
 const { PORT_HTTPS } = process.env; 
 const PAGES_PATH = path.join(__dirname, "pages");
 const { MONGO_URI } = process.env;
+
 /*/////////////////////////////////////////////////////
                     CONNECTING MONGODB
 ////////////////////////////////////////////////////*/
@@ -66,6 +67,9 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "pages"));
 
 /*/////////////////////////////////////////////////////
                     MIDDLEWARE SETUP
@@ -174,9 +178,3 @@ http.createServer((req, res) => {
 https.createServer(sslOptions, app).listen(PORT_HTTPS, () => {
   console.log(`HTTPS Server running at https://localhost:${PORT_HTTPS}`);
 });
-
-/*
-  SOURCES FOR THE MONGOOSE CONNECTIONG
-  - https://dev.to/akashakki/what-is-the-best-way-to-securely-managing-mongoose-connection-in-nodejs-applications-g3 
-  - https://www.geeksforgeeks.org/mongoose-connections/
-*/ 
